@@ -36,20 +36,23 @@ def check_inputted_sequence(inputted_sequence: list, given_sequence: list, dict:
 
     return failed_guesses
 
-l = int(input('Enter the length\n'))
-while True:
-    colorama.init()
 
-    giv_seq = generate_sequence(l, sequence_list=test_hiragana)
-    for item in giv_seq:
-        print(item, end='')
-    print()
+if __name__ == '__main__':
+    l = int(input('Enter the length\n'))
+    while True:
+        colorama.init()
 
-    i = input().split(' ')
-    print(check_inputted_sequence(i, giv_seq, dict=constants.romaji_dict))
+        giv_seq = generate_sequence(l, sequence_list=test_hiragana)
+        for item in giv_seq:
+            print(item, end='')
+        print()
 
-    colorama.deinit()
+        i = input().split(' ')
+        print(check_inputted_sequence(i, giv_seq, dict=constants.romaji_dict))
 
-# TODO:
-# make sure the zip() in check sequence always defaults to the size of the given sequence, and not the inputted one
-# make newline characters as well as spaces act as a word separators (for romaji only)
+        colorama.deinit()
+
+# TODO: make sure the zip() in check sequence always defaults to the size of the given sequence, and not the inputted
+#  one make newline characters as well as spaces act as a word separators (for romaji only) potentionally make
+#  generate_sequence return a string and not a list, because a list may not be needed and it's taking precious
+#  resources
