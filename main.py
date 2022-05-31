@@ -54,6 +54,3 @@ if __name__ == '__main__':
         print(check_inputted_sequence(i, giv_seq, dict=constants.romaji_dict))
 
         colorama.deinit()
-
-# TODO: make sure the zip() in check sequence always defaults to the size of the given sequence, and not the inputted
-#  one make newline characters as well as spaces act as a word separators (for romaji only) potentionally make
