@@ -1,10 +1,12 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QTextEdit, QLineEdit
+from PyQt5.QtWidgets import QMainWindow, QApplication, QTextEdit, QLineEdit, QLabel
 from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5 import Qt
 import sys
 
-import main # TEMPORARY
+import constants
+import main  # TEMPORARY
+
 
 class GUI(QMainWindow):
     def __init__(self):
@@ -17,36 +19,36 @@ class GUI(QMainWindow):
 
         self.inputBox.returnPressed.connect(self.EnterPress)
 
-        self.charList = main.generate_sequence(15)
+        self.ok_not_ok = self.findChild(QLabel, "ok_not_ok")  # TESTING
+
+        self.sequence_generation_source = constants.test_hiragana
+        self.sequence_dictionary = constants.romaji_dict
+
+        self.charStr = main.generate_sequence(15, self.sequence_generation_source)
         self.refreshOutput()
 
         self.show()
 
-    def charListToOutput(self):
-        char_str = ""
-        for i in range(0, 6):
-            char_str += self.charList[i]
-
-        return char_str
-
     def refreshOutput(self):
-        self.outputBox.setText(self.charListToOutput())
+        self.outputBox.setText(self.charStr[:5])
         pass
 
     def getCurrentChar(self):
-        return_char = self.charList.pop(0)
-        if len(self.charList) < 10:
-            self.charList.extend(main.generate_sequence(10)) # REQUEST AN EXTENSTION HERE, FROM THE MAIN FILE
+        return_char = self.charStr[0]
+        if len(self.charStr) < 10:
+            self.charStr += main.generate_sequence(10, self.sequence_generation_source)
+        self.charStr = self.charStr[1:]
         self.refreshOutput()
 
         return return_char
 
     def EnterPress(self):
-        # TODO:
-        # MAKE THE NEXT CHARACTER DISPLAY
-        # CHECK FOR ERRORS
+        inputted_letter = self.inputBox.text()
+        correct_letter = self.getCurrentChar()
 
-        # self.inputBox.text() CHECK USING A DICTIONARY
+        self.ok_not_ok.setText(
+            str(main.check_letter(inputted_letter, correct_letter, self.sequence_dictionary)))  # TESTING
+
         self.inputBox.setText("")
         pass
 
@@ -55,4 +57,15 @@ app = QApplication(sys.argv)
 MainWindow = GUI()
 app.exec_()
 
-# general TODO: disable scrolling on the output box
+# TODO: disable scrolling on the output box
+#  make text centered in the output box
+#  make the main character the one in the middle, and not the one in the left
+#  make the main character bigger
+#  make passed characters red if they are failed and green if they are successful
+#  clean up the file of unnecessary imports, test statements, etc
+#  rewrite the file structure
+
+# TODO big ideas:
+#  make menus with options of choosing the hiragana to be displayed
+#  integrate katakana
+#  integrate kanji (???)

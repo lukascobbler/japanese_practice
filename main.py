@@ -2,23 +2,26 @@ import random
 import colorama
 import constants
 
-test_hiragana = ('あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ')
 
-
-def generate_sequence(length: int, sequence_list: tuple = None):
-    if sequence_list is None:
-        sequence_list = constants.hiragana
+def generate_sequence(length: int, sequence_list: tuple):
     sequence_list_len = len(sequence_list)
 
-    sequence = []
+    sequence = ""
     for i in range(0, length):
         rand_char = sequence_list[random.randint(0, sequence_list_len - 1)]
-        sequence.append(rand_char)
+        sequence += rand_char
 
     return sequence
 
 
-def check_inputted_sequence(inputted_sequence: list, given_sequence: list, dict: dict=None):
+def check_letter(inputted_letter: str, correct_letter: str, dc: dict):
+    try:
+        return correct_letter == dc[inputted_letter]
+    except KeyError:
+        return False
+
+
+def check_inputted_sequence(inputted_sequence: list, given_sequence: str, dict: dict=None):
     if dict is None:
         dict = constants.romaji_dict
 
@@ -34,7 +37,7 @@ def check_inputted_sequence(inputted_sequence: list, given_sequence: list, dict:
             continue
         failed_guesses += colorama.Fore.GREEN + inp_word + " " + colorama.Fore.RESET
 
-    return failed_guesses
+    return failed_guesses # POSSIBLY REDUNDANT
 
 
 if __name__ == '__main__':
@@ -42,7 +45,7 @@ if __name__ == '__main__':
     while True:
         colorama.init()
 
-        giv_seq = generate_sequence(l, sequence_list=test_hiragana)
+        giv_seq = generate_sequence(l, constants.test_hiragana)
         for item in giv_seq:
             print(item, end='')
         print()
@@ -54,5 +57,3 @@ if __name__ == '__main__':
 
 # TODO: make sure the zip() in check sequence always defaults to the size of the given sequence, and not the inputted
 #  one make newline characters as well as spaces act as a word separators (for romaji only) potentionally make
-#  generate_sequence return a string and not a list, because a list may not be needed and it's taking precious
-#  resources
