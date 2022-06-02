@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 import sys
 import constants
 import GeneratorFunctions
+from itertools import zip_longest
 
 
 class GUI(QMainWindow):
@@ -12,9 +13,17 @@ class GUI(QMainWindow):
 
         uic.loadUi("gui.ui", self)
 
-        self.outputBoxCurrent = self.findChild(QLabel, "display_label_current")
-        self.outputBoxPast = self.findChild(QLabel, "display_label_past")
-        self.outputBoxFuture = self.findChild(QLabel, "display_label_future")
+        self.output_box_current = self.findChild(QLabel, "display_label_current")
+        self.outputBoxPast = [
+            self.findChild(QLabel, "display_label_past_1"),
+            self.findChild(QLabel, "display_label_past_2"),
+            self.findChild(QLabel, "display_label_past_3"),
+        ]
+        self.outputBoxFuture = [
+            self.findChild(QLabel, "display_label_future_1"),
+            self.findChild(QLabel, "display_label_future_2"),
+            self.findChild(QLabel, "display_label_future_3"),
+        ]
         self.inputBox = self.findChild(QLineEdit, "input_box")
         self.success_rate_label = self.findChild(QLabel, "success_rate")
 
@@ -23,37 +32,47 @@ class GUI(QMainWindow):
 
         self.inputBox.returnPressed.connect(self.EnterPress)
 
-        self.sequence_generation_source = constants.hiragana
+        self.sequence_generation_source = constants.test_hiragana
         self.sequence_dictionary = constants.romaji_dict
 
-        self.refresh()
-        self.show()
+        self.futureList = GeneratorFunctions.generate_sequence(15, self.sequence_generation_source)
+        self.currChar = GeneratorFunctions.generate_sequence(1, self.sequence_generation_source)[0]
+        self.pastList = [(True, ""), (True, ""), (True, "")]
+        self.total_attempts = 0
+        self.successful_attempts = 0
+        self.previous_attempt = True
 
+        self.refreshOutput()
+
+        self.show()
 
     def refresh(self):
         self.futureList = GeneratorFunctions.generate_sequence(15, self.sequence_generation_source)
         self.currChar = GeneratorFunctions.generate_sequence(1, self.sequence_generation_source)[0]
-        self.pastList = []
+        self.pastList = [(True, ""), (True, ""), (True, "")]
         self.total_attempts = 0
         self.successful_attempts = 0
         self.previous_attempt = True
         self.refreshOutput()
 
-
     def refreshOutput(self):
-        self.outputBoxCurrent.setText(
+        self.output_box_current.setText(
             self.getCurrentHtml()
         )
-        self.outputBoxPast.setText(
-            self.getPastHtml()
-        )
-        self.outputBoxFuture.setText(
-            self.getFutureHtml()
-        )
-        self.success_rate_label.setText(self.getSucessHtml())
-        # self.outputBox.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)
-        self.success_rate_label.setAlignment(Qt.AlignRight)
+        future_html = self.getFutureHtml()
+        past_html = self.getPastHtml()
 
+        for fHtml, fBox in zip(future_html, self.outputBoxFuture):
+            fBox.setText(fHtml)
+
+        for pHtml, pBox in zip(past_html, reversed(self.outputBoxPast)):
+            try:
+                pBox.setText(pHtml)
+            except IndexError:
+                pass
+
+        self.success_rate_label.setText(self.getSucessHtml())
+        self.success_rate_label.setAlignment(Qt.AlignRight)
 
     def checkLengths(self):
         if len(self.futureList) < 10:
@@ -62,26 +81,23 @@ class GUI(QMainWindow):
         if len(self.pastList) > 10:
             self.pastList = self.pastList[-10:]
 
-
     def getPastHtml(self):
-        html = ""
-        for success, correct_char in self.pastList[-5:]:
+        html = []
+        for success, correct_char in self.pastList[-3:]:
             if success:
-                html += "<font color=#00FF00 size=1>" + correct_char + "</font>"
+                html.append("<font color=#00FF00 size=1>" + correct_char + "</font>")
             else:
-                html += "<font color=#FF0000 size=1>" + correct_char + "</font>"
+                html.append("<font color=#FF0000 size=1>" + correct_char + "</font>")
 
         return html
-
 
     def getCurrentHtml(self):
         return "<font color=#000000 size=4>" + self.currChar + "</font>"
 
-
     def getFutureHtml(self):
-        html = ""
+        html = []
         for letter in self.futureList[:5]:
-            html += "<font color=#000000 size=1>" + letter + "</font>"
+            html.append("<font color=#000000 size=1>" + letter + "</font>")
         return html
 
     def getSucessHtml(self):
@@ -126,7 +142,6 @@ app.exec_()
 
 # TODO: disable scrolling on the output box
 #  add wpm
-#  fix double hiragana bug
 
 # TODO big ideas:
 #  make menus with options of choosing the hiragana to be displayed
