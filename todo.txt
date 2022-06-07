@@ -1,0 +1,6 @@
+TODO:
+add wpm
+
+TODO big ideas:
+make menus with options of choosing the hiragana to be displayed
+integrate kanji (???)
