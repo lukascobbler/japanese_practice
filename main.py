@@ -10,29 +10,30 @@ class GUI(QMainWindow):
     def __init__(self):
         super(GUI, self).__init__()
 
-        uic.loadUi("gui.ui", self)
+        # Gui items from the main ui
 
-        self.output_box_current = self.findChild(QLabel, "display_label_current")
-        self.output_box_past = [
-            self.findChild(QLabel, "display_label_past_1"),
-            self.findChild(QLabel, "display_label_past_2"),
-            self.findChild(QLabel, "display_label_past_3"),
-        ]
-        self.output_box_future = [
-            self.findChild(QLabel, "display_label_future_1"),
-            self.findChild(QLabel, "display_label_future_2"),
-            self.findChild(QLabel, "display_label_future_3"),
-        ]
-        self.input_box = self.findChild(QLineEdit, "input_box")
-        self.success_rate_label = self.findChild(QLabel, "success_rate")
+        self.output_box_current = None
+        self.output_box_past = None
+        self.output_box_future = None
+        self.input_box = None
+        self.success_rate_label = None
 
-        self.refresh_btn = self.findChild(QPushButton, "btn_reset")
-        self.refresh_btn.clicked.connect(self.refresh)
+        self.refresh_btn = None
+        self.go_to_select_btn = None
 
-        self.input_box.returnPressed.connect(self.enter_press)
+        # Gui items from the selection ui
 
-        self.sequence_generation_source = constants.katakana
-        self.sequence_dictionary = constants.romaji_katakana_dict
+        self.reset_selection_btn = None
+        self.go_to_main_btn = None
+        self.hiragana_select_all_btn = None
+        self.katakana_select_all_btn = None
+
+        # Default character maps
+
+        self.sequence_generation_source = constants.hiragana
+        self.sequence_dictionary = constants.romaji_hiragana_dict
+
+        # Global variables
 
         self.future_list = GeneratorFunctions.generate_sequence(15, self.sequence_generation_source)
         self.curr_char = GeneratorFunctions.generate_sequence(1, self.sequence_generation_source)[0]
@@ -41,7 +42,7 @@ class GUI(QMainWindow):
         self.successful_attempts = 0
         self.previous_attempt = True
 
-        self.refresh_output()
+        self.load_main_ui()
 
         self.show()
 
@@ -55,11 +56,9 @@ class GUI(QMainWindow):
         self.refresh_output()
 
     def refresh_output(self):
-        self.output_box_current.setText(
-            self.get_current_html()
-        )
-        future_html = self.get_future_html()
-        past_html = self.get_past_html()
+        self.output_box_current.setText(GeneratorFunctions.get_current_html(self.curr_char))
+        future_html = GeneratorFunctions.get_future_html(self.future_list)
+        past_html = GeneratorFunctions.get_past_html(self.past_list)
 
         for f_html, f_box in zip(future_html, self.output_box_future):
             f_box.setText(f_html)
@@ -70,7 +69,9 @@ class GUI(QMainWindow):
             except IndexError:
                 pass
 
-        self.success_rate_label.setText(self.get_success_html())
+        self.success_rate_label.setText(
+            GeneratorFunctions.get_success_html(self.total_attempts, self.successful_attempts, self.previous_attempt)
+        )
         self.success_rate_label.setAlignment(Qt.AlignRight)
 
     def check_lengths(self):
@@ -79,35 +80,6 @@ class GUI(QMainWindow):
 
         if len(self.past_list) > 10:
             self.past_list = self.past_list[-10:]
-
-    def get_past_html(self):
-        html = []
-        for success, correct_char in self.past_list[-3:]:
-            if success:
-                html.append("<font color=#00FF00 size=1>" + correct_char + "</font>")
-            else:
-                html.append("<font color=#FF0000 size=1>" + correct_char + "</font>")
-
-        return html
-
-    def get_current_html(self):
-        return "<font color=#000000 size=4>" + self.curr_char + "</font>"
-
-    def get_future_html(self):
-        html = []
-        for letter in self.future_list[:5]:
-            html.append("<font color=#000000 size=1>" + letter + "</font>")
-        return html
-
-    def get_success_html(self):
-        if self.total_attempts == 0:
-            return "<font color=#00FF00>100%</font>"
-
-        success_rate = round(self.successful_attempts / self.total_attempts * 100)
-        if self.previous_attempt:
-            return "<font color=#00FF00>" + str(success_rate) + "%</font>"
-        else:
-            return "<font color=#FF0000>" + str(success_rate) + "%</font>"
 
     def enter_press(self):
         self.check_lengths()
@@ -133,6 +105,51 @@ class GUI(QMainWindow):
         self.refresh_output()
 
         self.input_box.setText("")
+
+    def load_main_ui(self):
+        uic.loadUi("main_gui.ui", self)
+        self.output_box_current = self.findChild(QLabel, "display_label_current")
+        self.output_box_past = [
+            self.findChild(QLabel, "display_label_past_1"),
+            self.findChild(QLabel, "display_label_past_2"),
+            self.findChild(QLabel, "display_label_past_3"),
+        ]
+        self.output_box_future = [
+            self.findChild(QLabel, "display_label_future_1"),
+            self.findChild(QLabel, "display_label_future_2"),
+            self.findChild(QLabel, "display_label_future_3"),
+        ]
+        self.input_box = self.findChild(QLineEdit, "input_box")
+        self.success_rate_label = self.findChild(QLabel, "success_rate")
+
+        self.refresh_btn = self.findChild(QPushButton, "btn_reset")
+        self.go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")
+
+        self.refresh_btn.clicked.connect(self.refresh)
+        self.go_to_select_btn.clicked.connect(self.load_selection_ui)
+        self.input_box.returnPressed.connect(self.enter_press)
+
+        self.refresh()
+
+    def load_selection_ui(self):
+        uic.loadUi("selection_gui.ui", self)
+
+        self.reset_selection_btn = self.findChild(QPushButton, "btn_selection_reset")
+        self.go_to_main_btn = self.findChild(QPushButton, "btn_go_to_main")
+        self.hiragana_select_all_btn = self.findChild(QPushButton, "btn_hiragana_select_all")
+        self.katakana_select_all_btn = self.findChild(QPushButton, "btn_katakana_select_all")
+
+        self.go_to_main_btn.clicked.connect(self.load_main_ui)
+        self.hiragana_select_all_btn.clicked.connect(self.select_all_hiragana)
+        self.katakana_select_all_btn.clicked.connect(self.select_all_katakana)
+
+    def select_all_hiragana(self):
+        self.sequence_generation_source = constants.hiragana
+        self.sequence_dictionary = constants.romaji_hiragana_dict
+
+    def select_all_katakana(self):
+        self.sequence_generation_source = constants.katakana
+        self.sequence_dictionary = constants.romaji_katakana_dict
 
 
 app = QApplication(sys.argv)

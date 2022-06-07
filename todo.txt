@@ -1,6 +1,8 @@
 TODO:
 add wpm
+make a more advanced selection menu - with custom selections and custom lists
+add correct output when the user fails
+
 
 TODO big ideas:
-make menus with options of choosing the hiragana to be displayed
 integrate kanji (???)

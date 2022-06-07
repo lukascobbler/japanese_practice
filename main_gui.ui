@@ -9,24 +9,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1147</width>
-    <height>344</height>
+    <width>1141</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1147</width>
-    <height>344</height>
+    <width>1141</width>
+    <height>332</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1147</width>
-    <height>344</height>
+    <width>1141</width>
+    <height>332</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Japanise 練習</string>
+   <string>Japanese 練習</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -104,7 +104,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
+      <y>290</y>
       <width>94</width>
       <height>34</height>
      </rect>
@@ -374,6 +374,19 @@
       <bool>false</bool>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="btn_go_to_selection">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>94</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select kana</string>
+    </property>
    </widget>
   </widget>
  </widget>
