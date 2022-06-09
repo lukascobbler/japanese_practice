@@ -50,3 +50,13 @@ def get_success_html(total_attempts: int, successful_attempts: int, previous_att
         return "<font color=#00FF00>" + str(success_rate) + "%</font>"
     else:
         return "<font color=#FF0000>" + str(success_rate) + "%</font>"
+
+
+def get_kpm_html(total_attempts: int, seconds_passed: int):
+    seconds_passed = seconds_passed / 60
+    kpm = round(total_attempts / seconds_passed, 1)
+
+    if kpm > 20:
+        return "<font color=#00FF00>" + str(kpm) + "</font>"
+    else:
+        return "<font color=#FF0000>" + str(kpm) + "</font>"

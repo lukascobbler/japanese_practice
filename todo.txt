@@ -1,5 +1,5 @@
 TODO:
-add wpm
+add wpm - done, but could be improved
 make a more advanced selection menu - with custom selections and custom lists
 add correct output when the user fails
 

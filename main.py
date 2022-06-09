@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QTimer
 import sys
 import constants
 import GeneratorFunctions
@@ -17,6 +17,7 @@ class GUI(QMainWindow):
         self.output_box_future = None
         self.input_box = None
         self.success_rate_label = None
+        self.kpm_label = None
 
         self.refresh_btn = None
         self.go_to_select_btn = None
@@ -30,7 +31,7 @@ class GUI(QMainWindow):
 
         # Default character maps
 
-        self.sequence_generation_source = constants.hiragana
+        self.sequence_generation_source = constants.test_hiragana
         self.sequence_dictionary = constants.romaji_hiragana_dict
 
         # Global variables
@@ -40,7 +41,12 @@ class GUI(QMainWindow):
         self.past_list = [(True, ""), (True, ""), (True, "")]
         self.total_attempts = 0
         self.successful_attempts = 0
+        self.seconds_passed = 0
         self.previous_attempt = True
+
+        self.timer_thread = QTimer()
+        self.timer_thread.timeout.connect(self.update_kpm)
+        self.timer_thread.setInterval(750)
 
         self.load_main_ui()
 
@@ -52,7 +58,10 @@ class GUI(QMainWindow):
         self.past_list = [(True, ""), (True, ""), (True, "")]
         self.total_attempts = 0
         self.successful_attempts = 0
+        self.seconds_passed = 0
         self.previous_attempt = True
+        self.timer_thread.stop()
+        self.update_kpm()
         self.refresh_output()
 
     def refresh_output(self):
@@ -72,7 +81,12 @@ class GUI(QMainWindow):
         self.success_rate_label.setText(
             GeneratorFunctions.get_success_html(self.total_attempts, self.successful_attempts, self.previous_attempt)
         )
-        self.success_rate_label.setAlignment(Qt.AlignRight)
+
+    def update_kpm(self):
+        self.seconds_passed += 0.75
+        self.kpm_label.setText(
+            GeneratorFunctions.get_kpm_html(self.total_attempts, self.seconds_passed)
+        )
 
     def check_lengths(self):
         if len(self.future_list) < 10:
@@ -82,6 +96,9 @@ class GUI(QMainWindow):
             self.past_list = self.past_list[-10:]
 
     def enter_press(self):
+        if not self.timer_thread.isActive():
+            self.timer_thread.start()
+
         self.check_lengths()
 
         inputted_text = self.input_box.text()
@@ -121,6 +138,7 @@ class GUI(QMainWindow):
         ]
         self.input_box = self.findChild(QLineEdit, "input_box")
         self.success_rate_label = self.findChild(QLabel, "success_rate")
+        self.kpm_label = self.findChild(QLabel, "kpm")
 
         self.refresh_btn = self.findChild(QPushButton, "btn_reset")
         self.go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")

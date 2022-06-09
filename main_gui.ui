@@ -97,7 +97,10 @@
      </font>
     </property>
     <property name="text">
-     <string/>
+     <string>acc</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
    <widget class="QPushButton" name="btn_reset">
@@ -386,6 +389,27 @@
     </property>
     <property name="text">
      <string>Select kana</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="kpm">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>180</y>
+      <width>201</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>48</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>kpm</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>
