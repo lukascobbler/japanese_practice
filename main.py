@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton, QCheckBox
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
 import sys
@@ -18,6 +18,7 @@ class GUI(QMainWindow):
         self.input_box = None
         self.success_rate_label = None
         self.kpm_label = None
+        self.correct_answer_label = None
 
         self.refresh_btn = None
         self.go_to_select_btn = None
@@ -31,8 +32,9 @@ class GUI(QMainWindow):
 
         # Default character maps
 
-        self.sequence_generation_source = constants.test_hiragana
-        self.sequence_dictionary = constants.romaji_hiragana_dict
+        self.sequence_generation_source = constants.generate_all()
+        # self.inverse_dictionary = constants.hiragana_romaji_dict
+        # self.sequence_dictionary = constants.romaji_hiragana_dict
 
         # Global variables
 
@@ -43,6 +45,8 @@ class GUI(QMainWindow):
         self.successful_attempts = 0
         self.seconds_passed = 0
         self.previous_attempt = True
+        self.cb_hiragana = []
+        self.cb_katakana = []
 
         self.timer_thread = QTimer()
         self.timer_thread.timeout.connect(self.update_kpm)
@@ -81,6 +85,9 @@ class GUI(QMainWindow):
         self.success_rate_label.setText(
             GeneratorFunctions.get_success_html(self.total_attempts, self.successful_attempts, self.previous_attempt)
         )
+        self.correct_answer_label.setText(
+            GeneratorFunctions.get_inverse_html(self.past_list[-1])
+        )
 
     def update_kpm(self):
         self.seconds_passed += 0.75
@@ -101,10 +108,10 @@ class GUI(QMainWindow):
 
         self.check_lengths()
 
-        inputted_text = self.input_box.text()
+        inputted_text = self.input_box.text().lower()
         correct_letter = self.curr_char
 
-        success = GeneratorFunctions.check_letter(inputted_text, correct_letter, self.sequence_dictionary)
+        success = GeneratorFunctions.check_letter(inputted_text, correct_letter)
 
         if success:
             self.past_list.append((True, correct_letter))
@@ -139,6 +146,7 @@ class GUI(QMainWindow):
         self.input_box = self.findChild(QLineEdit, "input_box")
         self.success_rate_label = self.findChild(QLabel, "success_rate")
         self.kpm_label = self.findChild(QLabel, "kpm")
+        self.correct_answer_label = self.findChild(QLabel, "correct_answer")
 
         self.refresh_btn = self.findChild(QPushButton, "btn_reset")
         self.go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")
@@ -149,7 +157,19 @@ class GUI(QMainWindow):
 
         self.refresh()
 
+    def to_main_ui(self):
+        self.sequence_generation_source = []
+        for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
+            if category_hiragana["object"].isChecked():
+                self.sequence_generation_source += category_hiragana["characters"]
+            if category_katakana["object"].isChecked():
+                self.sequence_generation_source += category_katakana["characters"]
+
+        if len(self.sequence_generation_source) > 0:
+            self.load_main_ui()
+
     def load_selection_ui(self):
+        self.timer_thread.stop()
         uic.loadUi("selection_gui.ui", self)
 
         self.reset_selection_btn = self.findChild(QPushButton, "btn_selection_reset")
@@ -157,17 +177,31 @@ class GUI(QMainWindow):
         self.hiragana_select_all_btn = self.findChild(QPushButton, "btn_hiragana_select_all")
         self.katakana_select_all_btn = self.findChild(QPushButton, "btn_katakana_select_all")
 
-        self.go_to_main_btn.clicked.connect(self.load_main_ui)
-        self.hiragana_select_all_btn.clicked.connect(self.select_all_hiragana)
-        self.katakana_select_all_btn.clicked.connect(self.select_all_katakana)
+        self.cb_hiragana = []
+        self.cb_katakana = []
+        for let in constants.constants["letters"]:
+            self.cb_hiragana.append(
+                {
+                    "object": self.findChild(QCheckBox, "cb_hiragana_" + let),
+                    "characters": constants.constants["hiragana"][let]
+                }
+            )
+            self.cb_katakana.append(
+                {
+                    "object": self.findChild(QCheckBox, "cb_katakana_" + let),
+                    "characters": constants.constants["katakana"][let]
+                }
+            )
 
-    def select_all_hiragana(self):
-        self.sequence_generation_source = constants.hiragana
-        self.sequence_dictionary = constants.romaji_hiragana_dict
+        self.go_to_main_btn.clicked.connect(self.to_main_ui)
+        self.reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, False))
+        self.reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, False))
+        self.hiragana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, True))
+        self.katakana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, True))
 
-    def select_all_katakana(self):
-        self.sequence_generation_source = constants.katakana
-        self.sequence_dictionary = constants.romaji_katakana_dict
+    def select_kana(self, cb_list: list, selected: bool):
+        for category in cb_list:
+            category["object"].setChecked(selected)
 
 
 app = QApplication(sys.argv)

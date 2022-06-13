@@ -1,5 +1,7 @@
 import random
 
+import constants
+
 
 def generate_sequence(length: int, sequence_list: tuple):
     sequence_list_len = len(sequence_list)
@@ -12,9 +14,10 @@ def generate_sequence(length: int, sequence_list: tuple):
     return sequence
 
 
-def check_letter(inputted_letter: str, correct_letter: str, dc: dict):
+def check_letter(inputted_letter: str, correct_letter: str):
     try:
-        return correct_letter == dc[inputted_letter]
+        return correct_letter == constants.hiragana_direct_dict[inputted_letter] or\
+               correct_letter == constants.katakana_direct_dict[inputted_letter]
     except KeyError:
         return False
 
@@ -53,10 +56,32 @@ def get_success_html(total_attempts: int, successful_attempts: int, previous_att
 
 
 def get_kpm_html(total_attempts: int, seconds_passed: int):
-    seconds_passed = seconds_passed / 60
-    kpm = round(total_attempts / seconds_passed, 1)
+    minutes_passed = seconds_passed / 60
+    kpm = round(total_attempts / minutes_passed, 1)
+    if kpm > 999:
+        kpm = 999.0
 
     if kpm > 20:
         return "<font color=#00FF00>" + str(kpm) + "</font>"
     else:
         return "<font color=#FF0000>" + str(kpm) + "</font>"
+
+
+def get_inverse_html(previous_attempt: tuple):
+    success, previous_char = previous_attempt
+    try:
+        inverse_char = katakana_or_hiragana_inverse(previous_char)[previous_char]
+    except KeyError:
+        inverse_char = ''
+    if success:
+        return "<font color=#00FF00>" + inverse_char + "</font>"
+    else:
+        return "<font color=#FF0000>" + inverse_char + "</font>"
+
+
+def katakana_or_hiragana_inverse(char: str):
+    if char in constants.constants["hiragana"]["_all"]:
+        return constants.hiragana_inverse_dict
+    elif char in constants.constants["katakana"]["_all"]:
+        return constants.katakana_inverse_dict
+    return {}

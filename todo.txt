@@ -1,8 +1,10 @@
 TODO:
 add wpm - done, but could be improved
-make a more advanced selection menu - with custom selections and custom lists
-add correct output when the user fails
-
+make a more advanced selection menu - finish custom tab
+add correct output when the user fails - integrate with options
+add options menu (fonts, show kpm, show percentage_success, show correct output)
+add inverse input (romaji to hiragana / katakana)
+# rework the dictionary system, to always use one dictionary and one reverse dictionary - maybe not possible
 
 TODO big ideas:
 integrate kanji (???)
