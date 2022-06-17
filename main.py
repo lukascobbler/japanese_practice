@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton, QCheckBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton, QCheckBox, QPlainTextEdit, \
+    QFileDialog
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
 import sys
@@ -20,21 +21,16 @@ class GUI(QMainWindow):
         self.kpm_label = None
         self.correct_answer_label = None
 
-        self.refresh_btn = None
-        self.go_to_select_btn = None
-
         # Gui items from the selection ui
 
-        self.reset_selection_btn = None
-        self.go_to_main_btn = None
-        self.hiragana_select_all_btn = None
-        self.katakana_select_all_btn = None
+        self.cb_hiragana = None
+        self.cb_katakana = None
+        self.info_label_ok = None
+        self.custom_kana_pte = None
 
-        # Default character maps
+        # Default character map
 
         self.sequence_generation_source = constants.generate_all()
-        # self.inverse_dictionary = constants.hiragana_romaji_dict
-        # self.sequence_dictionary = constants.romaji_hiragana_dict
 
         # Global variables
 
@@ -45,8 +41,8 @@ class GUI(QMainWindow):
         self.successful_attempts = 0
         self.seconds_passed = 0
         self.previous_attempt = True
-        self.cb_hiragana = []
-        self.cb_katakana = []
+        self.custom_sequence = ""
+        self.file_dialog = QFileDialog()
 
         self.timer_thread = QTimer()
         self.timer_thread.timeout.connect(self.update_kpm)
@@ -133,75 +129,124 @@ class GUI(QMainWindow):
     def load_main_ui(self):
         uic.loadUi("main_gui.ui", self)
         self.output_box_current = self.findChild(QLabel, "display_label_current")
-        self.output_box_past = [
-            self.findChild(QLabel, "display_label_past_1"),
-            self.findChild(QLabel, "display_label_past_2"),
-            self.findChild(QLabel, "display_label_past_3"),
-        ]
-        self.output_box_future = [
-            self.findChild(QLabel, "display_label_future_1"),
-            self.findChild(QLabel, "display_label_future_2"),
-            self.findChild(QLabel, "display_label_future_3"),
-        ]
+        self.output_box_past = []
+        self.output_box_future = []
+        for i in range(1, 4):
+            self.output_box_past.append(
+                self.findChild(QLabel, "display_label_past_" + str(i))
+            )
+            self.output_box_future.append(
+                self.findChild(QLabel, "display_label_future_" + str(i)),
+            )
         self.input_box = self.findChild(QLineEdit, "input_box")
         self.success_rate_label = self.findChild(QLabel, "success_rate")
         self.kpm_label = self.findChild(QLabel, "kpm")
         self.correct_answer_label = self.findChild(QLabel, "correct_answer")
 
-        self.refresh_btn = self.findChild(QPushButton, "btn_reset")
-        self.go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")
+        refresh_btn = self.findChild(QPushButton, "btn_reset")
+        go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")
 
-        self.refresh_btn.clicked.connect(self.refresh)
-        self.go_to_select_btn.clicked.connect(self.load_selection_ui)
+        refresh_btn.clicked.connect(self.refresh)
+        go_to_select_btn.clicked.connect(self.load_selection_ui)
         self.input_box.returnPressed.connect(self.enter_press)
 
         self.refresh()
-
-    def to_main_ui(self):
-        self.sequence_generation_source = []
-        for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
-            if category_hiragana["object"].isChecked():
-                self.sequence_generation_source += category_hiragana["characters"]
-            if category_katakana["object"].isChecked():
-                self.sequence_generation_source += category_katakana["characters"]
-
-        if len(self.sequence_generation_source) > 0:
-            self.load_main_ui()
 
     def load_selection_ui(self):
         self.timer_thread.stop()
         uic.loadUi("selection_gui.ui", self)
 
-        self.reset_selection_btn = self.findChild(QPushButton, "btn_selection_reset")
-        self.go_to_main_btn = self.findChild(QPushButton, "btn_go_to_main")
-        self.hiragana_select_all_btn = self.findChild(QPushButton, "btn_hiragana_select_all")
-        self.katakana_select_all_btn = self.findChild(QPushButton, "btn_katakana_select_all")
+        reset_selection_btn = self.findChild(QPushButton, "btn_selection_reset")
+        go_to_main_btn = self.findChild(QPushButton, "btn_go_to_main")
+        save_button = self.findChild(QPushButton, "btn_save_kana")
+        load_button = self.findChild(QPushButton, "btn_load_kana")
+        hiragana_select_all_btn = self.findChild(QPushButton, "btn_hiragana_select_all")
+        katakana_select_all_btn = self.findChild(QPushButton, "btn_katakana_select_all")
+        self.custom_kana_pte = self.findChild(QPlainTextEdit, "pte_custom_kana")
+        self.info_label_ok = self.findChild(QLabel, "info_label_ok")
 
         self.cb_hiragana = []
         self.cb_katakana = []
-        for let in constants.constants["letters"]:
+        for cat in constants.constants["categories"]:
             self.cb_hiragana.append(
                 {
-                    "object": self.findChild(QCheckBox, "cb_hiragana_" + let),
-                    "characters": constants.constants["hiragana"][let]
+                    "object": self.findChild(QCheckBox, "cb_hiragana_" + cat),
+                    "cat": cat
                 }
             )
             self.cb_katakana.append(
                 {
-                    "object": self.findChild(QCheckBox, "cb_katakana_" + let),
-                    "characters": constants.constants["katakana"][let]
+                    "object": self.findChild(QCheckBox, "cb_katakana_" + cat),
+                    "cat": cat
                 }
             )
 
-        self.go_to_main_btn.clicked.connect(self.to_main_ui)
-        self.reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, False))
-        self.reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, False))
-        self.hiragana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, True))
-        self.katakana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, True))
+        go_to_main_btn.clicked.connect(self.to_main_ui)
+        reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, False))
+        reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, False))
+        hiragana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, True))
+        katakana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, True))
+        save_button.clicked.connect(self.save_custom_to_file)
+        load_button.clicked.connect(self.load_custom_from_file)
+        self.custom_kana_pte.textChanged.connect(self.check_custom_sequence)
+
+        self.custom_kana_pte.setPlainText(self.custom_sequence)
+
+    def to_main_ui(self):
+        self.sequence_generation_source = []
+        for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
+            if category_hiragana["object"].isChecked():
+                self.sequence_generation_source += constants.constants["hiragana"][category_hiragana["cat"]]
+            if category_katakana["object"].isChecked():
+                self.sequence_generation_source += constants.constants["katakana"][category_katakana["cat"]]
+
+        if self.check_custom_sequence():
+            self.remember_custom_sequence()
+            sequence = self.custom_sequence.split(',')
+            for kana in sequence:
+                if kana not in self.sequence_generation_source:
+                    self.sequence_generation_source.append(kana)
+
+        if len(self.sequence_generation_source) > 0:
+            self.load_main_ui()
+
+    def load_custom_from_file(self):
+        file = QFileDialog.getOpenFileName(self, 'Open kana list', '', 'Kana text files (*.kana)')[0]
+        if not file:
+            return
+        with open(file, 'r') as f:
+            text = f.read()
+        self.custom_kana_pte.setPlainText(text)
+
+    def save_custom_to_file(self):
+        if not self.check_custom_sequence():
+            return
+        file = QFileDialog.getSaveFileName(self, 'Save kana list', '', 'Kana text files (*.kana)')[0]
+        if not file:
+            return
+        self.remember_custom_sequence()
+        with open(file, 'w') as f:
+            f.write(self.custom_sequence)
 
     def select_kana(self, cb_list: list, selected: bool):
         for category in cb_list:
             category["object"].setChecked(selected)
+
+    def check_custom_sequence(self):
+        if GeneratorFunctions.check_sequence(self.custom_kana_pte.toPlainText()):
+            self.info_label_ok.setText("<font color=#00FF00>List OK!</font>")
+            return True
+
+        self.info_label_ok.setText("<font color=#FF0000>List not OK!</font>")
+        return False
+
+    def remember_custom_sequence(self):
+        sequence = self.custom_kana_pte.toPlainText().split(',')
+        self.custom_sequence = ""
+        for kana in sequence:
+            if kana == "":
+                continue
+            self.custom_sequence += kana + ","
 
 
 app = QApplication(sys.argv)

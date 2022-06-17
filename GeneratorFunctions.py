@@ -16,7 +16,7 @@ def generate_sequence(length: int, sequence_list: tuple):
 
 def check_letter(inputted_letter: str, correct_letter: str):
     try:
-        return correct_letter == constants.hiragana_direct_dict[inputted_letter] or\
+        return correct_letter == constants.hiragana_direct_dict[inputted_letter] or \
                correct_letter == constants.katakana_direct_dict[inputted_letter]
     except KeyError:
         return False
@@ -85,3 +85,14 @@ def katakana_or_hiragana_inverse(char: str):
     elif char in constants.constants["katakana"]["_all"]:
         return constants.katakana_inverse_dict
     return {}
+
+
+def check_sequence(sequence: str):
+    if sequence == "":
+        return False
+    for kana in sequence.split(","):
+        if kana == "":
+            continue
+        if kana not in constants.constants["hiragana"]["_all"] and kana not in constants.constants["katakana"]["_all"]:
+            return False
+    return True

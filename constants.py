@@ -497,7 +497,7 @@ constants = {
             'mya', 'myu', 'myo', 'ya', 'yu', 'yo', 'ra', 'ri', 'ru', 're', 'ro', 'rya', 'ryu', 'ryo', 'wa', 'wo', 'n'
         )
     },
-    "letters": ("a", "h", "k", "s", "m", "y", "t", "r", "nm", "w", "ns", "z", "b", "d", "p", "ya", "yu", "yo")
+    "categories": ("a", "h", "k", "s", "m", "y", "t", "r", "nm", "w", "ns", "z", "b", "d", "p", "ya", "yu", "yo")
 }
 
 

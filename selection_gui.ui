@@ -1020,7 +1020,7 @@ katakana</string>
      <attribute name="title">
       <string>Custom</string>
      </attribute>
-     <widget class="QPlainTextEdit" name="pt_custom_kana">
+     <widget class="QPlainTextEdit" name="pte_custom_kana">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -1028,6 +1028,20 @@ katakana</string>
         <width>991</width>
         <height>231</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>24</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>1</number>
       </property>
      </widget>
      <widget class="QPushButton" name="btn_load_kana">
@@ -1078,6 +1092,30 @@ katakana</string>
       </property>
       <property name="text">
        <string>Save</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="info_label_ok">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>10</y>
+        <width>221</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;List not OK!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
