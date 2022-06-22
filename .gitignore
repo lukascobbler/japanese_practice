@@ -1,4 +1,8 @@
 .idea/
 __pycache__/
-test.py
 *.kana
+build/
+dist/
+runnable/
+*.zip
+*.spec
