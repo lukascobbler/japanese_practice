@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton, QCheckBox, QPlainTextEdit, \
-    QFileDialog
+    QFileDialog, QFontComboBox, QTabWidget
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import QFont
 import sys
 import constants
 import GeneratorFunctions
@@ -27,6 +28,8 @@ class GUI(QMainWindow):
         self.cb_katakana = None
         self.info_label_ok = None
         self.custom_kana_pte = None
+        self.t_widget = None
+        self.pref_checkboxes = None
 
         # Default character map
 
@@ -42,7 +45,17 @@ class GUI(QMainWindow):
         self.seconds_passed = 0
         self.previous_attempt = True
         self.custom_sequence = ""
-        self.file_dialog = QFileDialog()
+        self.last_tab_index = 0
+        self.checked_checkboxes = {
+            "hiragana": constants.constants["categories"],
+            "katakana": constants.constants["categories"],
+        }
+        self.preferences = {
+            "font": QFont("Source Han Serif JP"),
+            "show_correct_output": True,
+            "show_kpm": True,
+            "show_success_rate": True,
+        }
 
         self.timer_thread = QTimer()
         self.timer_thread.timeout.connect(self.update_kpm)
@@ -78,18 +91,30 @@ class GUI(QMainWindow):
             except IndexError:
                 pass
 
-        self.success_rate_label.setText(
-            GeneratorFunctions.get_success_html(self.total_attempts, self.successful_attempts, self.previous_attempt)
-        )
-        self.correct_answer_label.setText(
-            GeneratorFunctions.get_inverse_html(self.past_list[-1])
-        )
+        if self.preferences["show_success_rate"]:
+            self.success_rate_label.setText(
+                GeneratorFunctions.get_success_html(
+                    self.total_attempts, self.successful_attempts, self.previous_attempt
+                )
+            )
+        else:
+            self.success_rate_label.setText("")
+
+        if self.preferences["show_correct_output"]:
+            self.correct_answer_label.setText(
+                GeneratorFunctions.get_inverse_html(self.past_list[-1])
+            )
+        else:
+            self.correct_answer_label.setText("")
 
     def update_kpm(self):
         self.seconds_passed += 0.75
-        self.kpm_label.setText(
-            GeneratorFunctions.get_kpm_html(self.total_attempts, self.seconds_passed)
-        )
+        if self.preferences["show_kpm"]:
+            self.kpm_label.setText(
+                GeneratorFunctions.get_kpm_html(self.total_attempts, self.seconds_passed)
+            )
+        else:
+            self.kpm_label.setText("")
 
     def check_lengths(self):
         if len(self.future_list) < 10:
@@ -138,6 +163,11 @@ class GUI(QMainWindow):
             self.output_box_future.append(
                 self.findChild(QLabel, "display_label_future_" + str(i)),
             )
+        for obp, obf in zip(self.output_box_past, self.output_box_future):
+            obp.setStyleSheet(self.get_font_by_size(60))
+            obf.setStyleSheet(self.get_font_by_size(60))
+        self.output_box_current.setStyleSheet(self.get_font_by_size(60))
+
         self.input_box = self.findChild(QLineEdit, "input_box")
         self.success_rate_label = self.findChild(QLabel, "success_rate")
         self.kpm_label = self.findChild(QLabel, "kpm")
@@ -162,8 +192,17 @@ class GUI(QMainWindow):
         load_button = self.findChild(QPushButton, "btn_load_kana")
         hiragana_select_all_btn = self.findChild(QPushButton, "btn_hiragana_select_all")
         katakana_select_all_btn = self.findChild(QPushButton, "btn_katakana_select_all")
+        apply_font_btn = self.findChild(QPushButton, "btn_font_apply")
+        font_select_fcb = self.findChild(QFontComboBox, "fcb_select_font")
+
+        self.pref_checkboxes = {
+            "show_correct_output_cb": self.findChild(QCheckBox, "cb_show_correct_output"),
+            "show_kpm_cb": self.findChild(QCheckBox, "cb_show_kpm"),
+            "show_success_cb": self.findChild(QCheckBox, "cb_show_success"),
+        }
+        self.t_widget = self.findChild(QTabWidget, "twidget_selection_menu")
         self.custom_kana_pte = self.findChild(QPlainTextEdit, "pte_custom_kana")
-        self.info_label_ok = self.findChild(QLabel, "info_label_ok")
+        self.info_label_ok = self.findChild(QLabel, "label_info_ok")
 
         self.cb_hiragana = []
         self.cb_katakana = []
@@ -180,6 +219,14 @@ class GUI(QMainWindow):
                     "cat": cat
                 }
             )
+        for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
+            if category_hiragana["cat"] in self.checked_checkboxes["hiragana"]:
+                category_hiragana["object"].setChecked(True)
+            if category_katakana["cat"] in self.checked_checkboxes["katakana"]:
+                category_katakana["object"].setChecked(True)
+
+        self.apply_font(self.preferences["font"])
+        self.custom_kana_pte.setStyleSheet(self.get_font_by_size(24))
 
         go_to_main_btn.clicked.connect(self.to_main_ui)
         reset_selection_btn.clicked.connect(lambda: self.select_kana(self.cb_hiragana, False))
@@ -188,24 +235,42 @@ class GUI(QMainWindow):
         katakana_select_all_btn.clicked.connect(lambda: self.select_kana(self.cb_katakana, True))
         save_button.clicked.connect(self.save_custom_to_file)
         load_button.clicked.connect(self.load_custom_from_file)
+        apply_font_btn.clicked.connect(lambda: self.apply_font(font_select_fcb.currentFont()))
         self.custom_kana_pte.textChanged.connect(self.check_custom_sequence)
 
         self.custom_kana_pte.setPlainText(self.custom_sequence)
+        font_select_fcb.setCurrentFont(self.preferences["font"])
+        self.t_widget.setCurrentIndex(self.last_tab_index)
+        self.pref_checkboxes["show_correct_output_cb"].setChecked(self.preferences["show_correct_output"])
+        self.pref_checkboxes["show_kpm_cb"].setChecked(self.preferences["show_kpm"])
+        self.pref_checkboxes["show_success_cb"].setChecked(self.preferences["show_success_rate"])
 
     def to_main_ui(self):
         self.sequence_generation_source = []
+        self.checked_checkboxes["katakana"] = []
+        self.checked_checkboxes["hiragana"] = []
         for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
             if category_hiragana["object"].isChecked():
                 self.sequence_generation_source += constants.constants["hiragana"][category_hiragana["cat"]]
+                self.checked_checkboxes["hiragana"].append(category_hiragana["cat"])
             if category_katakana["object"].isChecked():
                 self.sequence_generation_source += constants.constants["katakana"][category_katakana["cat"]]
+                self.checked_checkboxes["katakana"].append(category_katakana["cat"])
 
         if self.check_custom_sequence():
             self.remember_custom_sequence()
             sequence = self.custom_sequence.split(',')
             for kana in sequence:
+                if kana == "":
+                    continue
                 if kana not in self.sequence_generation_source:
                     self.sequence_generation_source.append(kana)
+
+        self.last_tab_index = self.t_widget.currentIndex()
+
+        self.preferences["show_correct_output"] = self.pref_checkboxes["show_correct_output_cb"].isChecked()
+        self.preferences["show_kpm"] = self.pref_checkboxes["show_kpm_cb"].isChecked()
+        self.preferences["show_success_rate"] = self.pref_checkboxes["show_success_cb"].isChecked()
 
         if len(self.sequence_generation_source) > 0:
             self.load_main_ui()
@@ -214,8 +279,11 @@ class GUI(QMainWindow):
         file = QFileDialog.getOpenFileName(self, 'Open kana list', '', 'Kana text files (*.kana)')[0]
         if not file:
             return
-        with open(file, 'r') as f:
-            text = f.read()
+        try:
+            with open(file, 'r') as f:
+                text = f.read()
+        except UnicodeDecodeError:
+            return
         self.custom_kana_pte.setPlainText(text)
 
     def save_custom_to_file(self):
@@ -247,6 +315,21 @@ class GUI(QMainWindow):
             if kana == "":
                 continue
             self.custom_sequence += kana + ","
+
+    def apply_font(self, font: QFont):
+        self.preferences["font"] = font
+        for category_hiragana, category_katakana in zip(self.cb_hiragana, self.cb_katakana):
+            if category_hiragana["cat"] in ("yo", "yu", "ya"):
+                category_hiragana["object"].setStyleSheet(self.get_font_by_size(13))
+            else:
+                category_hiragana["object"].setStyleSheet(self.get_font_by_size(18))
+            if category_katakana["cat"] in ("yo", "yu", "ya"):
+                category_katakana["object"].setStyleSheet(self.get_font_by_size(13))
+            else:
+                category_katakana["object"].setStyleSheet(self.get_font_by_size(18))
+
+    def get_font_by_size(self, size: int):
+        return "font: 100 " + str(size) + "pt \"" + self.preferences["font"].family() + "\";"
 
 
 app = QApplication(sys.argv)

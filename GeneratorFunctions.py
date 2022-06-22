@@ -88,8 +88,6 @@ def katakana_or_hiragana_inverse(char: str):
 
 
 def check_sequence(sequence: str):
-    if sequence == "":
-        return False
     for kana in sequence.split(","):
         if kana == "":
             continue

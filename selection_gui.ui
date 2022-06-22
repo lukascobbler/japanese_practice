@@ -218,7 +218,7 @@ katakana</string>
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_kana">
      <attribute name="title">
@@ -250,12 +250,12 @@ katakana</string>
          <x>10</x>
          <y>50</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -266,14 +266,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>80</y>
+         <y>83</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -284,14 +284,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>116</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -302,14 +302,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>140</y>
+         <y>149</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -320,14 +320,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>170</y>
+         <y>182</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -340,12 +340,12 @@ katakana</string>
          <x>270</x>
          <y>50</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -356,14 +356,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>80</y>
+         <y>83</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -374,14 +374,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>110</y>
+         <y>116</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -401,14 +401,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>140</y>
+         <y>149</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -428,14 +428,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>170</y>
+         <y>182</y>
          <width>211</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -455,14 +455,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>210</y>
+         <y>222</y>
          <width>101</width>
-         <height>41</height>
+         <height>40</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -494,14 +494,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>80</y>
+         <y>83</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -512,14 +512,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>140</y>
+         <y>149</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -539,14 +539,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>190</x>
-         <y>210</y>
+         <y>222</y>
          <width>101</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -557,14 +557,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>80</y>
+         <y>83</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -575,14 +575,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>140</y>
+         <y>149</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -593,14 +593,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>116</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -618,7 +618,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -629,14 +629,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>110</y>
+         <y>116</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -656,14 +656,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>170</y>
+         <y>182</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -674,14 +674,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>170</y>
+         <y>182</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="layoutDirection">
@@ -708,7 +708,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -752,7 +752,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -763,14 +763,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>80</y>
+         <y>84</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -788,7 +788,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -799,14 +799,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>80</y>
+         <y>84</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -817,7 +817,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>128</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -835,7 +835,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>150</y>
+         <y>162</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -853,7 +853,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>180</y>
+         <y>196</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -892,14 +892,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>270</x>
-         <y>80</y>
+         <y>84</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -910,14 +910,14 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>80</y>
+         <y>84</y>
          <width>211</width>
          <height>41</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -928,7 +928,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>150</y>
+         <y>162</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -953,7 +953,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -971,7 +971,7 @@ katakana</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>18</pointsize>
+         <pointsize>16</pointsize>
         </font>
        </property>
        <property name="text">
@@ -982,7 +982,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>120</y>
+         <y>128</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -1000,7 +1000,7 @@ katakana</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>180</y>
+         <y>196</y>
          <width>471</width>
          <height>31</height>
         </rect>
@@ -1057,12 +1057,12 @@ katakana</string>
        <string>Load</string>
       </property>
      </widget>
-     <widget class="QLabel" name="info_label">
+     <widget class="QLabel" name="label_info">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>581</width>
+        <width>571</width>
         <height>31</height>
        </rect>
       </property>
@@ -1094,12 +1094,12 @@ katakana</string>
        <string>Save</string>
       </property>
      </widget>
-     <widget class="QLabel" name="info_label_ok">
+     <widget class="QLabel" name="label_info_ok">
       <property name="geometry">
        <rect>
-        <x>580</x>
+        <x>640</x>
         <y>10</y>
-        <width>221</width>
+        <width>161</width>
         <height>31</height>
        </rect>
       </property>
@@ -1121,8 +1121,222 @@ katakana</string>
     </widget>
     <widget class="QWidget" name="tab_preferences">
      <attribute name="title">
-      <string>Preferences</string>
+      <string>Options</string>
      </attribute>
+     <widget class="QGroupBox" name="gb_preferences">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>490</width>
+        <height>270</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="title">
+       <string>Preferences</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QCheckBox" name="cb_show_correct_output">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show correct output</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="cb_show_kpm">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show kana per minute</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="cb_show_success">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>100</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Show success rate</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="gb_font_selection">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>10</y>
+        <width>491</width>
+        <height>130</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="title">
+       <string>Font</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QPushButton" name="btn_font_apply">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>82</y>
+         <width>451</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 10pt &quot;JetBrains Mono&quot;;</string>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+      <widget class="QFontComboBox" name="fcb_select_font">
+       <property name="geometry">
+        <rect>
+         <x>112</x>
+         <y>42</y>
+         <width>361</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 12pt &quot;JetBrains Mono&quot;;</string>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="writingSystem">
+        <enum>QFontDatabase::Japanese</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_font_info">
+       <property name="geometry">
+        <rect>
+         <x>22</x>
+         <y>42</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>18</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Font: </string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="gb_theme_selection">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>150</y>
+        <width>490</width>
+        <height>130</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="title">
+       <string>Theme</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QComboBox" name="cb_theme">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>471</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Japanese</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dark</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Light</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QPushButton" name="btn_apply_theme">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>80</y>
+         <width>471</width>
+         <height>34</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>
