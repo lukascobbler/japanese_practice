@@ -1,4 +1,4 @@
-import random
+from random import randint
 
 import constants
 
@@ -8,7 +8,7 @@ def generate_sequence(length: int, sequence_list: tuple):
 
     sequence = []
     for i in range(0, length):
-        rand_char = sequence_list[random.randint(0, sequence_list_len - 1)]
+        rand_char = sequence_list[randint(0, sequence_list_len - 1)]
         sequence.append(rand_char)
 
     return sequence

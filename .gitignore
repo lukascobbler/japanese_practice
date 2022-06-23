@@ -1,8 +1,14 @@
+# editor specific
 .idea/
-__pycache__/
+
+# compilation folders
+/build/
+/dist/
+/runnable/
+/__pycache__/
+*venv/
+
+# misc files
 *.kana
-build/
-dist/
-runnable/
 *.zip
 *.spec

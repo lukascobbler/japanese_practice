@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit, QLabel, QPushButton, QCheckBox, QPlainTextEdit, \
-    QFileDialog, QFontComboBox, QTabWidget
+    QFileDialog, QFontComboBox, QTabWidget, QFrame
 from PyQt5 import uic
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import QFont
-import sys
+from sys import argv
 import constants
 import GeneratorFunctions
 
@@ -21,6 +21,7 @@ class GUI(QMainWindow):
         self.success_rate_label = None
         self.kpm_label = None
         self.correct_answer_label = None
+        self.credits_button = None
 
         # Gui items from the selection ui
 
@@ -172,14 +173,17 @@ class GUI(QMainWindow):
         self.success_rate_label = self.findChild(QLabel, "success_rate")
         self.kpm_label = self.findChild(QLabel, "kpm")
         self.correct_answer_label = self.findChild(QLabel, "correct_answer")
+        self.credits_button = self.findChild(QPushButton, "btn_credits")
 
         refresh_btn = self.findChild(QPushButton, "btn_reset")
         go_to_select_btn = self.findChild(QPushButton, "btn_go_to_selection")
 
         refresh_btn.clicked.connect(self.refresh)
         go_to_select_btn.clicked.connect(self.load_selection_ui)
+        self.credits_button.clicked.connect(self.show_credits)
         self.input_box.returnPressed.connect(self.enter_press)
 
+        self.show_credits()
         self.refresh()
 
     def load_selection_ui(self):
@@ -275,6 +279,13 @@ class GUI(QMainWindow):
         if len(self.sequence_generation_source) > 0:
             self.load_main_ui()
 
+    def show_credits(self):
+        credits_frame = self.findChild(QFrame, "frame_credits")
+        if self.credits_button.isChecked():
+            credits_frame.show()
+        else:
+            credits_frame.hide()
+
     def load_custom_from_file(self):
         file = QFileDialog.getOpenFileName(self, 'Open kana list', '', 'Kana text files (*.kana)')[0]
         if not file:
@@ -332,6 +343,6 @@ class GUI(QMainWindow):
         return "font: 100 " + str(size) + "pt \"" + self.preferences["font"].family() + "\";"
 
 
-app = QApplication(sys.argv)
+app = QApplication(argv)
 MainWindow = GUI()
 app.exec_()

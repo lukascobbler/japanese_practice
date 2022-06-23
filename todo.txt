@@ -1,6 +1,6 @@
 TODO:
 add wpm - done, but could be improved
-add credits and license
+add license
 add makefile for pyinstaller for building executables - finish on Windows
 # rework the dictionary system, to always use one dictionary and one reverse dictionary - maybe not possible
 
