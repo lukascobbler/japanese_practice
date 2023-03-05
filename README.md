@@ -8,8 +8,8 @@ Tools: Python, pip, PyQt, Makefile
 
 To build, use ```make venv```, source the activation script and use ```make```. The output binary will be in the ```Japanese Practice``` folder.
 
-![Alt text](/pictures/typing.png?raw=true "Example screenshot of typing answers")
+![Alt text](./screenshots/typing.png?raw=true "Example screenshot of typing answers")
 
-![Alt text](/pictures/options.png?raw=true "Example screenshot of available options")
+![Alt text](./screenshots/options.png?raw=true "Example screenshot of available options")
 
-![Alt text](/pictures/selection.png?raw=true "Example screenshot of the selection menu")
+![Alt text](./screenshots/selection.png?raw=true "Example screenshot of the selection menu")
